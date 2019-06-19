@@ -9,15 +9,15 @@
         <span>{{item.plane}}</span>
       </div>
       <div class="col product" >
-        <span>{{item.destination}}—{{item.originating}}</span><br>
-        <span>{{new Date(item.start_time).toLocaleString()}}—{{new Date(item.end_time).toLocaleString()}}</span><br>
+        <span>{{item.originating}} — {{item.destination}}</span><br>
+        <span>{{`${new Date(item.start_time).getFullYear()}/${new Date(item.start_time).getMonth()+1}/${new Date(item.start_time).getDate()} ${new Date(item.start_time).getHours()}:${new Date(item.start_time).getMinutes()==0?"00":new Date(item.start_time).getMinutes()}`}} — {{`${new Date(item.end_time).getFullYear()}/${new Date(item.end_time).getMonth()+1}/${new Date(item.end_time).getDate()} ${new Date(item.end_time).getHours()}:${new Date(item.end_time).getMinutes()==0?"00":new Date(item.end_time).getMinutes()}`}}</span><br>
       </div>
       <div class="col price">￥{{(item.price).toFixed(2)}}</div>
       <!-- <div class="col sum">{{item.count}}</div>
       <div class="col total">￥{{parseInt(item.count*item.price).toFixed(2)}}</div> -->
       <div class="col">
         <mt-button class="mybutton font-weight-bold " @click="remove" :data-cid="item.cid">cancal</mt-button>
-        <mt-button class="info" @click.prevent="info" :data-cid="item.cid">详细信息</mt-button>
+        <mt-button class="info" @click.prevent="info" :data-cid="item.cid">details</mt-button>
       </div>
     </div>
   </div>
@@ -107,8 +107,8 @@ export default {
           var end_minute = new Date(item.end_time).getMinutes()
           if(end_minute == 0) end_minute="00"
           this.$messagebox({
-            title:"机票详情",
-            message:`${item.airlines} ${item.plane}<br>${item.destination}-${item.originating}<br>${start_year}年${start_month}月${start_date}日 ${start_hour}:${start_minute}-${end_year}年${end_month}月${end_date}日 ${end_hour}:${end_minute}<br>登机人：${sessionStorage.getItem("uname")}`,
+            title:"Ticket Details",
+            message:`${item.airlines} ${item.plane}<br>${item.destination}-${item.originating}<br>${start_year}/${start_month}/${start_date} ${start_hour}:${start_minute} - ${end_year}/${end_month}/${end_date} ${end_hour}:${end_minute}<br>Passenger : ${sessionStorage.getItem("uname")}`,
             showConfirmButton:true
           })  
         }

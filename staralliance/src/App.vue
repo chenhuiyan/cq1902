@@ -1,26 +1,9 @@
 <template>
  <div class="app-container">
-    <router-view :key="key"></router-view>
+    <router-view></router-view>
  </div>
 </template>
-<script>
-    export default{
-        data(){
-            return {}
-        },
-        computed: {
-            key() {
-                return new Date().getTime()
-            }
-        },
-        watch: {
-            '$route': function (to, from) {
-            console.log(to)
-            console.log(from)
-            }
-        }
-    }
-</script>
+
 <style>
     .app-container{
         padding-top:0;
@@ -58,4 +41,8 @@
         text-overflow:ellipsis;
 
     }
+    label{
+        margin-bottom: 0;
+    }
+
 </style>

@@ -34,7 +34,7 @@ server.use(session({
   saveUninitialized:true
 }));
 //9:绑定监听端口
-server.listen(5050);
+server.listen(3000);
 
 //10：接收用户登录请求
 server.get("/login",(req,res)=>{
@@ -122,11 +122,11 @@ server.get("/plane",(req,res)=>{
   //参数
   var originating = req.query.originating;
   var destination = req.query.destination;
-  var start_time = req.query.start_time;
-  var end_time = req.query.end_time;
+  var start_time = req.query.start_time+"%";
+  var end_time = req.query.end_time+"%";
   //sql
-  var sql = "SELECT * FROM star_plane WHERE originating=? and  destination=? ";
-   pool.query(sql,[originating,destination],(err,result)=>{
+  var sql = "SELECT * FROM star_plane WHERE originating=? and  destination=? and start_time like ? and end_time like ? order by start_time ASC";
+   pool.query(sql,[originating,destination,start_time,end_time],(err,result)=>{
      if(err)throw err;
      res.send({code:1,msg:"查询成功",data:result})
    });

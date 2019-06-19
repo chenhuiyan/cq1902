@@ -7,16 +7,10 @@
              <!-- <span>.|cmp-travel-class--ECONOMY</span> -->
            </div>
            <div class="Takeoff_Time col p-0">
-              <span>{{new Date(item.start_time).toLocaleString()}}</span>
-              <br>
-              <!-- <span>CLT</span> -->
+              <span>{{`${new Date(item.start_time).getFullYear()}-${new Date(item.start_time).getMonth()+1}-${new Date(item.start_time).getDate()} ${new Date(item.start_time).getHours()}:${new Date(item.start_time).getMinutes()==0?"00":new Date(item.start_time).getMinutes()}`}}</span>
            </div>
-           <!-- <div class="col-2 Arrow"> -->
-           <!-- </div> -->
            <div class="col Arrival_Time m-0 p-0">
-              <span>{{new Date(item.end_time).toLocaleString()}}</span>
-              <br>
-              <!-- <span>IST</span> -->
+              <span>{{`${new Date(item.end_time).getFullYear()}-${new Date(item.end_time).getMonth()+1}-${new Date(item.end_time).getDate()} ${new Date(item.end_time).getHours()}:${new Date(item.end_time).getMinutes()==0?"00":new Date(item.start_time).getMinutes()}`}}</span>
            </div>
            <div class="col price p-0">
                <span>￥{{(item.price).toFixed(2)}}</span>&nbsp;&nbsp;
@@ -73,8 +67,8 @@ export default {
                     if(end_minute == 0) end_minute="00"
 
                     this.$messagebox({
-                        title:"预订成功",
-                        message:`${item.airlines} ${item.plane}<br>${item.destination}-${item.originating}<br>${start_year}年${start_month}月${start_date}日 ${start_hour}:${start_minute}-${end_year}年${end_month}月${end_date}日 ${end_hour}:${end_minute}<br>登机人：${sessionStorage.getItem("uname")}`,
+                        title:"Successful Booking",
+                        message:`${item.airlines} ${item.plane}<br>${item.destination}-${item.originating}<br>${start_year}/${start_month}/${start_date} ${start_hour}:${start_minute} - ${end_year}/${end_month}/${end_date} ${end_hour}:${end_minute}<br>Passenger : ${sessionStorage.getItem("uname")}`,
                         showConfirmButton:true
                     })
                 })
@@ -86,17 +80,12 @@ export default {
 </script>
 <style scoped>
 .row{
-    /* max-width: 1000px; */
-    /* display: flex;
-    justify-content: space-between;
-    align-items: center; */
     padding: 20px 0;
     border: 1px solid rgba(32, 29, 29, 0.1);
-    
+    align-items: center;
 }
 .text_title{
     font:bold 14px HelveticaNeueW01-BdExt;
-
 }
   .text{
       font:12px  HelveticaNeueW01-BdExt;
@@ -105,25 +94,20 @@ export default {
   .text img{
        width:100px;
   }
-  /* 箭头 */
-  /* .Arrow{
-      width:50px;
-      height: 50px;
-      background:url("../assets/image/flights_to/flight_arrow.png") no-repeat center right;
-  } */
   /* 时间 */
-  /* .Takeoff_Time{
-      text-align: right;
-      padding:0 15px;
-  } */
-  /* .Arrival_Time{
-      text-align: left;
-      padding:0 15px;
-  } */
+  .Takeoff_Time{
+      font-weight: normal;
+      font-size: 16px;
+  }
+  .Arrival_Time{
+      font-size: 16px;
+      font-weight: normal;
+  }
   /* 价格 */
-  /* .price{
-      padding-left: 90px;
-  } */
+  .price{
+      font-size: 16px;
+      font-weight: normal;
+  }
   /* 订票按钮 */
   button{
       background-color: #ebca7a;

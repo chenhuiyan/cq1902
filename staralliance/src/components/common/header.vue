@@ -12,8 +12,8 @@
       <div>
         <div class="d-lg-block d-sm-none">
           <ul class="nav">
-            <li v-for="(item,list) of lists" :key="list" @click="changeColor(list)" :class="{opacity:i == list}">
-              <router-link class="link px-2" :to="href[list]" >{{item}}</router-link>
+            <li v-for="(item,list) of lists" :key="list" @click="changeColor(list)">
+              <router-link class="link px-2" :to="href[list]" :class="{opacity1:i == list}">{{item}}</router-link>
             </li>
           </ul>
         </div>
@@ -24,10 +24,11 @@
       <div class="nav">
         <!-- <router-link to="#" class="earth d-sm-none d-lg-inline-block"></router-link> -->
         <ul class="text-white list-unstyled push d-sm-none d-lg-block">
-          <li><router-link to="login" class="link mr-2" v-show="uname==undefined">login</router-link></li>
-          <li><router-link to="#" class="link mr-2" v-show="uname!=undefined">{{uname}}</router-link></li>
-          <li><router-link to="register" class="link" v-show="uname==undefined">register</router-link></li>
-          <li><router-link to="login" class="link" v-show="uname!=undefined">logout</router-link></li>
+          <li><router-link to="login" class="link mr-2" v-show="uname==undefined">login</router-link></li> 
+          <li><router-link to="#" class="link mr-2" style="color:#ebca7a" v-show="uname!=undefined">{{uname}}</router-link></li>
+          <li>|</li>
+          <li><router-link to="register" class="link ml-2" v-show="uname==undefined">register</router-link></li>
+          <li>&nbsp;<router-link to="login" class="link ml-2" v-show="uname!=undefined">logout</router-link></li>
         </ul>
         <router-link to="#" class="search"></router-link>
       </div>
@@ -72,12 +73,10 @@ export default {
       this.menu()
     },
     changeColor(list){
+      console.log(list)
       this.i = list
-      // this.$set(this.i,0,list)
-      console.log(list,this.i)
     }
   }
-
 }
 </script>
 <style scoped>
@@ -104,9 +103,8 @@ export default {
     text-decoration: none;
     opacity: 0.8;
   }
-  .opacity{
+  .opacity1{
     opacity:0.6;
-    color: white !important;
   }
   .search{
     display: inline-block;
@@ -125,10 +123,13 @@ export default {
     margin-right: 20px;
   }
   .push{
-    display: flex;
     position: fixed;
-    top: 9px;
-    right: 50px;
+    top: 16px;
+    right: 52px;
+  }
+  ul.push>li{
+    float: left;
+    line-height: 25px;
   }
   @media screen and (max-width:600px){
     .logo{

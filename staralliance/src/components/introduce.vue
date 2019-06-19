@@ -27,8 +27,8 @@
                 <card :img="require('../assets/image/introduce/BookFlyHero_R.jpg')" :details="`Book and Fly`" :href="`#`"></card>
             </div> -->
             <div class="container cards w-100">
-            <card  :img="require('../assets/image/introduce/photo.jpg')" :href="`/#/inspiration`" :where="`More Inspiration`" :buy="``"></card>
-            <card :img="require('../assets/image/introduce/BookFlyHero_R.jpg')" :href="`/#/inspiration`" :where="`Book and Fly`" :buy="``"></card>
+            <card  :img="require('../assets/image/introduce/photo.jpg')" :href="`/#/our-products`" :where="`More Inspiration`" :buy="``"></card>
+            <card :img="require('../assets/image/introduce/BookFlyHero_R.jpg')" :href="`/#/flights_to`" :where="`Book and Fly`" :buy="``"></card>
         </div>
         </section>
         <foott></foott>

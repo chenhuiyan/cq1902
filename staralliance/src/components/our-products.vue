@@ -38,7 +38,7 @@ export default {
     foot,
     card,
     pushdown,
-  } 
+  },  
 }
 </script>
 <style scoped>

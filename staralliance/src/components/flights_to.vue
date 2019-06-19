@@ -14,7 +14,7 @@
             <div class="right">
               <div class="chb">
                 <!-- <input class="mb-0" type="radio">Roundtrip&nbsp;&nbsp; -->
-                <input class="mb-0" type="radio">One-way
+                <input class="mb-0" type="radio" checked>One-way
               </div>
               <br>
               <input class="Input" type="text" placeholder="城市(City)" v-model="from" @change="From">
@@ -22,9 +22,23 @@
               <input class="Input" type="text" placeholder="城市(City)" v-model="to" @change="To">
               <br>
               <!-- <input class="Input" :placeholder="i" v-for="(i,n) of content" type="date" :key="n">   -->
-              <input type="date" class="Input" placeholder="yyyy-mm-dd" v-model="depart">
+              <!-- <input type="date" class="Input" placeholder="yyyy-mm-dd" v-model="depart"> -->
+              <el-date-picker class="date1 my-2"
+                v-model="depart"
+                align="right"
+                type="date"
+                :placeholder="time"
+                :picker-options="pickerOptions">
+              </el-date-picker>
               <br>
-              <input type="date" class="Input" placeholder="yyyy-mm-dd" v-model="turn">
+              <!-- <input type="date" class="Input" placeholder="yyyy-mm-dd" v-model="turn"> -->
+              <el-date-picker class="date1 my-2"
+                v-model="turn"
+                align="right"
+                type="date"
+                :placeholder="time"
+                :picker-options="pickerOptions">
+              </el-date-picker>
               <br>
               <div class="chb">
                 <input type="checkbox">Seniors (65+) &nbsp;&nbsp;
@@ -72,7 +86,33 @@ export default {
       to: "",
       depart: "",
       turn: "",
-      res: ""
+      res: "",
+      time:"yyyy-mm-dd",
+      pickerOptions: {
+                disabledDate(time) {
+                    return time.getTime() < Date.now()- 3600 * 1000 * 24;
+                },
+                shortcuts: [{
+                    text: 'Today',
+                    onClick(picker) {
+                    picker.$emit('pick', new Date());
+                    }
+                }, {
+                    text: 'Tomorrow',
+                    onClick(picker) {
+                    const date = new Date();
+                    date.setTime(date.getTime() + 3600 * 1000 * 24);
+                    picker.$emit('pick', date);
+                    }
+                }, {
+                    text: 'A week later',
+                    onClick(picker) {
+                    const date = new Date();
+                    date.setTime(date.getTime() + 3600 * 1000 * 24 * 7);
+                    picker.$emit('pick', date);
+                    }
+                }]
+            },
     };
   },
   components: {
@@ -82,16 +122,31 @@ export default {
     list
   },
   created(){
-    console.log(this.$router)
-    // if(location.href == "http://127.0.0.1:8080/#/flights_to"){
-    //   this.from = ""
-    //   this.to = ""
-    //   this.depart = ""
-    //   this.turn = ""
-    // }else{
-    //   console.log(this.$router)
-    //   this.from = location.href.split("?")[1].split("&")[0].split("=")[1]
-    // }
+    var params = this.$router.history.current.query
+    if(location.href == "http://127.0.0.1:8080/#/flights_to"){
+      this.from = ""
+      this.to = ""
+      this.depart = ""
+      this.turn = ""
+    }else{   
+      this.from = params.from
+      this.to = params.to
+      this.depart = params.depart
+      this.turn = params.turn
+      this.axios
+      .get("plane", {
+        params: {
+          originating: this.from.split("(")[0],
+          destination: this.to.split("(")[0],
+          start_time:this.depart,
+          end_time:this.turn
+        }
+      })
+      .then(res => {
+        this.res = res.data.data;
+        // console.log(this.res);
+      });
+    }
   },
   methods: {
     From() {
@@ -111,32 +166,58 @@ export default {
       //console.log(this.from)
       if (this.from == undefined || this.from == null || this.from == "") {
         this.$toast("from required");
-        retuen;
+        return;
       }
       if (this.to == undefined || this.to == null || this.to == "") {
         this.$toast("to required");
-        retuen;
+        return;
+      }
+      if(this.depart == undefined || this.depart == null || this.depart == ""){
+        this.$toast("depart date required")  
+        return;             
+      }
+      if(this.turn == undefined || this.turn == null || this.turn == ""){
+        this.$toast("return date required")  
+        return;             
       }
       if (
         (this.from !== undefined || this.from !== null || this.from !== "") &&
         (this.to !== undefined || this.to !== null || this.to !== "")
       ) {
-        console.log(
-          this.depart,
-          this.turn,
-          this.from.split("(")[0],
-          this.to.split("(")[0]
-        );
+        var depart = this.depart
+        var turn = this.turn
+        // console.log(depart)
+        // console.log(turn)
+
+        var departMonth = depart.getMonth()+1
+        if(departMonth<10) departMonth="0"+departMonth
+        var departDate = depart.getDate()
+        if(departDate<10) departDate="0"+departDate
+        depart = `${depart.getFullYear()}-${departMonth}-${departDate}`
+
+        var turnMonth = turn.getMonth()+1
+        if(turnMonth<10) turnMonth="0"+turnMonth
+        var turnDate = turn.getDate()
+        if(turnDate<10) turnDate="0"+turnDate
+        turn = `${turn.getFullYear()}-${turnMonth}-${turnDate}`
+        // console.log(
+        //   depart,
+        //   turn,
+        //   this.from.split("(")[0],
+        //   this.to.split("(")[0]
+        // );
         this.axios
           .get("plane", {
             params: {
               originating: this.from.split("(")[0],
-              destination: this.to.split("(")[0]
+              destination: this.to.split("(")[0],
+              start_time:depart,
+              end_time:turn
             }
           })
           .then(res => {
             this.res = res.data.data;
-            console.log(this.res);
+            // console.log(this.res);
           });
       }
     }
@@ -201,7 +282,7 @@ p {
   align-items: center;
   padding: 0 250px;
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 500px) {
   .Content {
     margin: 0;
   }
@@ -226,14 +307,21 @@ p {
   padding-top: 50px;
   position: relative;
 }
+.el-date-editor.el-input, .el-date-editor.el-input__inner {
+  width: 240px;
+}
 .Input {
   display: inline-block;
   width: 240px;
+  height: 40px;
   margin: 12px 0;
-  padding: 5px;
+  padding: 5px 10px;
   border: none;
+  color: #606266;
+  font-size: 14px;
   outline: none;
-  box-shadow: 1px 1px 1px 1px #ebca7a;
+  /* box-shadow: 1px 1px 1px 1px #ebca7a; */
+  border-radius: 3px;
 }
 /* 航班搜索button */
 .btn_search {

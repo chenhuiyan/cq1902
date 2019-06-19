@@ -102,10 +102,10 @@
                   :buy="`Have an unforgettable winter on this exhilarating trip`"></card>
             <card class="m-2" :img="require('../assets/img/inspiration/theme19.jpg')" 
                   :href="`#`" :where="`Most Popular Round the World Destinations`" 
-                  :buy="`Discover the beauty of the most popular Round the World destinations`"></card>
+                  :buy="`the most popular destinations`"></card>
             <card class="m-2" :img="require('../assets/img/inspiration/theme20.jpg')" 
                   :href="`#`" :where="`Best Places to Photograph Around the World`" 
-                  :buy="`Discover the beauty of the most popular Round the World destinations`"></card>
+                  :buy="`the most popular destinations`"></card>
         </div>
         <foot></foot>
         
